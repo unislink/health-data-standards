@@ -50,7 +50,7 @@ module HealthDataStandards
             end
             
             ip = find_or_create_provider(informant_prov)
-            clinical_attribs.merge { :provider => ip }
+            clinical_attribs.merge({ :provider => ip })
           end
         end
 
