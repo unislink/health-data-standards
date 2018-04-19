@@ -44,7 +44,7 @@ module HealthDataStandards
             if !informant_prov[:cda_identifiers].nil? && !informant_prov[:cda_identifiers].empty?
               clinical_cda_identifiers = informant_prov[:cda_identifiers].select { |x| x[:root] && x[:root].start_with?('clinical.') }
               clinical_cda_identifiers.each do | cci |
-                clinical_attribs[cci.root] = clinical_attribs[cci.extension]
+                clinical_attribs[cci.root] = cci.extension
               end if !clinical_cda_identifiers.empty?
               informant_prov[:cda_identifiers].delete_if {|x| x[:root] && x[:root].start_with?('clinical.') }
             end
