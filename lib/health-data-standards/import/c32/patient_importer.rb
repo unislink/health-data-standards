@@ -130,7 +130,7 @@ module HealthDataStandards
         # @param [Hash] patient A hash that is used to represent the patient
         # @param [Nokogiri::XML::Node] doc The C32 document parsed by Nokogiri
         def get_demographics(patient, doc)
-          entity_node = doc.at_xpath('/cda:ClinicalDocument/cda:id[@root="2.16.840.1.113883.3.1381"]')
+          entity_node = doc.at_xpath('/cda:ClinicalDocument/cda:id')
           patient[:entity_id] = entity_node['extension'] if entity_node
           @patient_identifier = patient[:entity_id] || ""
           effective_date = doc.at_xpath('/cda:ClinicalDocument/cda:effectiveTime')['value']
