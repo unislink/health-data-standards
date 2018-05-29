@@ -14,7 +14,7 @@ module HealthDataStandards
           @section_importers[:medications] = [generate_importer(MedicationImporter, nil, '2.16.840.1.113883.3.560.1.13'),
                                               generate_importer(MedicationOrderImporter, nil, '2.16.840.1.113883.3.560.1.17', 'ordered'), 
                                               generate_importer(MedicationDispensedImporter, nil, '2.16.840.1.113883.3.560.1.8', 'dispensed')]
-          @section_importers[:conditions] = [generate_importer(ConditionImporter, nil, '2.16.840.1.113883.3.560.1.2', 'active'), #ConditionImporter.new
+          @section_importers[:conditions] = [generate_importer(ConditionImporter, nil, '2.16.840.1.113883.3.560.1.2'), #ConditionImporter.new
                                              generate_importer(Cat1::EcogStatusImporter, nil, '2.16.840.1.113883.3.560.1.1001'),
                                              generate_importer(Cat1::TobaccoUseImporter, nil, '2.16.840.1.113883.3.560.1.1001', 'completed')]
           @section_importers[:social_history] = [CDA::SectionImporter.new(CDA::EntryFinder.new("//cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.38' or cda:templateId/@root='2.16.840.1.113883.10.20.15.3.8']"))]

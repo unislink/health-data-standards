@@ -6,7 +6,7 @@ module HealthDataStandards
         def initialize
           super
           @entry_finder = CDA::EntryFinder.new("//cda:section[cda:templateId/@root='2.16.840.1.113883.10.20.22.2.5' or cda:templateId/@root='2.16.840.1.113883.10.20.22.2.5.1']/cda:entry/cda:act/cda:entryRelationship/cda:observation[@duplicate='false']")
-          @status_xpath = "./cda:entryRelationship/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.6']/cda:value"
+          @status_xpath = "../../../cda:act/cda:statusCode | ./cda:statusCode | ./cda:entryRelationship/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.6']/cda:value"
           @laterality_xpath = "./cda:targetSiteCode"
           #optional
           #health status
