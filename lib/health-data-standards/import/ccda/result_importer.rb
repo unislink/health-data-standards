@@ -27,16 +27,6 @@ module HealthDataStandards
 
         end
 
-        def extract_description(parent_element, entry, nrh)
-          super
-
-          if /a1c/i.match(entry.description) && entry.values && entry.values.size > 0
-            if !(/mg\/dl/i.match(entry.values[0]['units']))
-              entry.add_code('4548-4', 'LOINC')
-            end
-          end
-        end
-
         def extract_values(parent_element, entry)
           super
           if !entry.values.present?
