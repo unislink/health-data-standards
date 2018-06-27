@@ -1,6 +1,7 @@
 <documentationOf typeCode="DOC">
   <serviceEvent classCode="PCPR"> <!-- care provision -->
-  <% if patient[:group_providers] %>
+  <% if !patient[:group_providers].empty? %>
+      <!-- group providers -->
       <effectiveTime>
           <low nullFlavor='UNK'/>
           <high nullFlavor='UNK'/>
@@ -52,6 +53,7 @@
     <% singlePerformer = 0 -%>
     <% patient.provider_performances.each do |pp| -%>
       <% if singlePerformer == 0 -%>
+        <!-- provider performances -->
         <effectiveTime>
           <low <%= value_or_null_flavor(pp.start_date) %>/>
           <high <%= value_or_null_flavor(pp.end_date) %>/>
