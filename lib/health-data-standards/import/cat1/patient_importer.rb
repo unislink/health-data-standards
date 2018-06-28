@@ -45,9 +45,9 @@ module HealthDataStandards
                                              generate_importer(CDA::ProcedureImporter, "./cda:entry/cda:procedure[cda:templateId/@root = '2.16.840.1.113883.10.20.24.3.66']", '2.16.840.1.113883.3.560.1.63'),
                                              generate_importer(CDA::ProcedureImporter, "./cda:entry/cda:observation[cda:templateId/@root = '2.16.840.1.113883.10.20.24.3.69']", '2.16.840.1.113883.3.560.1.21'), #risk category assessment
                                              generate_importer(CDA::ProcedureImporter, "./cda:entry/cda:observation[cda:templateId/@root = '2.16.840.1.113883.10.20.24.3.18']", '2.16.840.1.113883.3.560.1.3', 'performed'), #diagnostic study performed
-                                             generate_importer(CDA::ProcedureImporter, "./cda:entry/cda:observation[cda:templateId/@root = '2.16.840.1.113883.10.20.24.3.20']", '2.16.840.1.113883.3.560.1.11'), #diagnostic study result
+                                             generate_importer(CDA::ProcedureImporter, "./cda:entry/cda:observation[cda:templateId/@root = '2.16.840.1.113883.10.20.24.3.20']", '2.16.840.1.113883.3.560.1.11'), #diagnostic study result                                             
                                              generate_importer(DiagnosticStudyOrderImporter, nil, '2.16.840.1.113883.3.560.1.40', 'ordered')]
-
+          @section_importers[:assessments] = [generate_importer(CDA::ProcedureImporter, "//cda:entry/cda:observation[cda:templateId/@root = '2.16.840.1.113883.10.20.24.3.144']", '2.16.840.1.113883.10.20.28.3.117', 'performed')] # assessment
           @section_importers[:allergies] = [generate_importer(ProcedureIntoleranceImporter, nil, '2.16.840.1.113883.3.560.1.61'),
                                             generate_importer(CDA::AllergyImporter, "./cda:entry/cda:observation[cda:templateId/@root = '2.16.840.1.113883.10.20.24.3.46']", '2.16.840.1.113883.3.560.1.67'), #medication intolerance
                                             generate_importer(CDA::AllergyImporter, "./cda:entry/cda:observation[cda:templateId/@root = '2.16.840.1.113883.10.20.24.3.43']", '2.16.840.1.113883.3.560.1.7'), #medication adverse effect
