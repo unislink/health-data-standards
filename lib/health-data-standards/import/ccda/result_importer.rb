@@ -15,15 +15,15 @@ module HealthDataStandards
           super
           
           if !entry.codes.present?
-            # entry.add_code('', 'LOINC')
-            code_elements = parent_element.xpath("../../cda:code")
-            code_elements.each do |code_element|
-              add_code_if_present(code_element, entry)
-              translations = code_element.xpath('cda:translation')
-              translations.each do |translation|
-                add_code_if_present(translation, entry)
-              end
-            end
+            entry.add_code('', 'LOINC')
+            # code_elements = parent_element.xpath("../../cda:code")
+            # code_elements.each do |code_element|
+            #   add_code_if_present(code_element, entry)
+            #   translations = code_element.xpath('cda:translation')
+            #   translations.each do |translation|
+            #     add_code_if_present(translation, entry)
+            #   end
+            # end
           end
 
         end
@@ -48,6 +48,9 @@ module HealthDataStandards
               code = entry.xpath("cda:code")[0]
               keys << code.attributes["code"].value if code.attributes["code"]
 
+              textElements = entry.xpath("cda:text")
+              keys << textElements[0].content if textElements.size > 0
+
               statusCode = entry.xpath("cda:statusCode")[0]
               keys << statusCode.attributes["code"].value if statusCode.attributes["code"]
 
@@ -57,10 +60,13 @@ module HealthDataStandards
               valueNode = entry.xpath("cda:value")[0]
               keys << valueNode.attributes["nullFlavor"].value if valueNode.attributes["nullFlavor"]
               keys << valueNode.attributes["value"].value if valueNode.attributes["value"]
+              keys << valueNode.attributes["unit"].value if valueNode.attributes["unit"]
 
               plainText = keys.flatten.reject { |c| c.blank? }.join(", ")
+              
               qhash = Digest::MD5.hexdigest(plainText)
               entry["duplicate"] = qhMap[qhash] || false
+              Rails.logger.info "UNIS - RI #{plainText} #{ qhMap[qhash] || false }"
               qhMap[qhash] = true     
           end
           Rails.logger.info "#{Time.now.to_s} CCDA resultimporter total #{entries.count} unique #{qhMap.keys.count}"
