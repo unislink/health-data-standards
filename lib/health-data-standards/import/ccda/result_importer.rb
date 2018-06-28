@@ -66,7 +66,6 @@ module HealthDataStandards
               
               qhash = Digest::MD5.hexdigest(plainText)
               entry["duplicate"] = qhMap[qhash] || false
-              Rails.logger.info "UNIS - RI #{plainText} #{ qhMap[qhash] || false }"
               qhMap[qhash] = true     
           end
           Rails.logger.info "#{Time.now.to_s} CCDA resultimporter total #{entries.count} unique #{qhMap.keys.count}"
