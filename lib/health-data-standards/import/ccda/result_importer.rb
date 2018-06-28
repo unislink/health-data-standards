@@ -15,15 +15,15 @@ module HealthDataStandards
           super
           
           if !entry.codes.present?
-            entry.add_code('', 'LOINC')
-            # code_elements = parent_element.xpath("../../cda:code")
-            # code_elements.each do |code_element|
-            #   add_code_if_present(code_element, entry)
-            #   translations = code_element.xpath('cda:translation')
-            #   translations.each do |translation|
-            #     add_code_if_present(translation, entry)
-            #   end
-            # end
+            # entry.add_code('', 'LOINC')
+            code_elements = parent_element.xpath("../../cda:code")
+            code_elements.each do |code_element|
+              add_code_if_present(code_element, entry)
+              translations = code_element.xpath('cda:translation')
+              translations.each do |translation|
+                add_code_if_present(translation, entry)
+              end
+            end
           end
 
         end
