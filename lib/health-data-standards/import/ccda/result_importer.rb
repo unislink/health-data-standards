@@ -42,6 +42,7 @@ module HealthDataStandards
           super
           
           currentElementText = parent_element.at_xpath("./cda:text").try("text")
+          Rails.logger.info "UNIS - RI - Desc #{ entry.description } #{ currentElementText }"
           entry.description = currentElementText if currentElementText
         end
 
