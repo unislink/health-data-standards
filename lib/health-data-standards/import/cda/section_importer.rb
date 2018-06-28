@@ -54,6 +54,8 @@ module HealthDataStandards
           entry
         end
 
+        private
+
         def extract_description(parent_element, entry, nrh)
           orig_text_ref_element = parent_element.at_xpath(@description_xpath)
           desc_ref_element = parent_element.at_xpath("./cda:text/cda:reference")
@@ -74,8 +76,6 @@ module HealthDataStandards
           end
           entry.description = entry.description.encode("UTF-8", invalid: :replace, undef: :replace) if !entry.description.nil?
         end
-
-        private
 
         def extract_status(parent_element, entry)
           status_element = parent_element.at_xpath(@status_xpath)

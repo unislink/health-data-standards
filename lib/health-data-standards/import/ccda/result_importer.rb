@@ -38,14 +38,6 @@ module HealthDataStandards
           end
         end
 
-        def extract_description(parent_element, entry, nrh)
-          super
-          
-          currentElementText = parent_element.at_xpath("./cda:text").try("text")
-          Rails.logger.info "UNIS - RI - Desc #{ entry.description } #{ currentElementText }"
-          entry.description = currentElementText if currentElementText
-        end
-
         private
         def mark_duplicate_results(doc)
           ef = CDA::EntryFinder.new("//cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.2']")
