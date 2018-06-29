@@ -4,25 +4,27 @@ Gem::Specification.new do |s|
   s.name = "health-data-standards"
   s.summary = "A library for generating and consuming various healthcare related formats."
   s.description = "A library for generating and consuming various healthcare related formats. These include HITSP C32, QRDA Category I, and QRDA Category III."
-  s.email = "talk@projectpophealth.org"
+  s.email = "tacoma-list@lists.mitre.org"
   s.homepage = "https://github.com/projectcypress/health-data-standards"
-  s.authors = ["Andy Gregorowicz", "Sam Sayer", "Marc Hadley", "Rob Dingwell", "Andre Quina"]
-  s.license = 'APL 2.0'
+  s.authors = ["The MITRE Corporation"]
+  s.license = 'Apache-2.0'
 
-  s.version = '3.6.1'
+  s.version = '3.7.0'
 
   s.add_dependency 'rest-client', '~>1.8.0'
   s.add_dependency 'erubis', '~> 2.7.0'
-  s.add_dependency 'mongoid', '~> 4.0.0'
-  s.add_dependency 'mongoid-tree', '~> 1.0.4'
-  s.add_dependency 'activesupport', '~> 4.1.1'
+  s.add_dependency 'mongoid', '~> 5.0.0'
+  s.add_dependency 'mongoid-tree', '~> 2.0.0'
+  s.add_dependency 'activesupport', '~> 4.2.0'
+
   s.add_dependency 'protected_attributes', '~> 1.0.5'
   s.add_dependency 'uuid', '~> 2.3.7'
   s.add_dependency 'builder', '~> 3.1'
-  s.add_dependency 'nokogiri', '~> 1.6.8'
+  s.add_dependency 'nokogiri', '~> 1.8.1'
   s.add_dependency 'highline', "~> 1.7.0"
 
-  s.add_dependency 'rubyzip', '0.9.9'
+  s.add_dependency 'rubyzip', '~> 1.2.1'
+  s.add_dependency 'zip-zip', '~> 0.3'
 
   s.add_dependency 'log4r', '~> 1.1.10'
   s.add_dependency 'memoist', '~> 0.9.1'
