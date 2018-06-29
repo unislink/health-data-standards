@@ -55,6 +55,26 @@ class Provider
     cda_id_ccn = self.cda_identifiers.where(root: CCN_OID).first
     cda_id_ccn ? cda_id_ccn.extension : nil
   end
+  
+  def tins=(a_tins)
+    if self.cda_identifiers
+      self.cda_identifiers.delete_if { |c| c.root == TAX_ID_OID }
+    end
+    if !a_tins.nil?
+      a_tins.each do | t |
+        self.cda_identifiers << CDAIdentifier.new(root: TAX_ID_OID, extension: t)
+      end
+    end
+  end
+
+  def tins
+    cda_id_tins = self.cda_identifiers.where(root: TAX_ID_OID)
+    tids = cda_id_tins.map do | t |
+       t.extension
+    end if cda_id_tins
+    tids = tids || []
+    tids.reject { |t| t.blank? }
+  end
 
   def records(effective_date=nil)
     Record.by_provider(self, effective_date)

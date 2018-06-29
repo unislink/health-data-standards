@@ -18,9 +18,9 @@ module HealthDataStandards
       end
 
       def create_code_string(entry, preferred_code, options={})
-        
+
         code_string = create_code_display_string(entry, preferred_code, options)
-        
+      
         unless entry['negationInd'] == true
           code_string += "<originalText>#{ERB::Util.html_escape entry.description}</originalText>" if entry.respond_to?(:description)
 
@@ -30,7 +30,6 @@ module HealthDataStandards
           
           code_string += "</#{options['tag_name']}>"
         end
-
         code_string
       end
 
@@ -38,9 +37,12 @@ module HealthDataStandards
         code_string = nil
         if entry['negationInd'] == true
           code_string = "<#{options['tag_name']} nullFlavor=\"NA\" #{options['extra_content']}/>"
+
         elsif preferred_code
           code_system_oid = HealthDataStandards::Util::CodeSystemHelper.oid_for_code_system(preferred_code['code_set'])
-          code_string = "<#{options['tag_name']} code=\"#{preferred_code['code']}\" codeSystem=\"#{code_system_oid}\" #{options['extra_content']}>"
+          code_string = "<#{options['tag_name']} code=\"#{preferred_code['code']}\" codeSystem=\"#{code_system_oid}\" #{options['extra_content']} "
+          code_string += "displayName=\"#{ERB::Util.html_escape entry.description}\"" if entry.respond_to?(:description) && !entry.description.nil?
+          code_string += ">"
         else
           code_string = "<#{options['tag_name']} "
           code_string += "nullFlavor=\"UNK\" " unless options["exclude_null_flavor"]
@@ -57,8 +59,10 @@ module HealthDataStandards
 
       def create_translations_code_string(entry, options={})
         code_string = ''
-        entry.translation_codes(options['preferred_code_sets'], options['value_set_map']).each do |translation|
-          code_string += "<translation code=\"#{translation['code']}\" codeSystem=\"#{HealthDataStandards::Util::CodeSystemHelper.oid_for_code_system(translation['code_set'])}\"/>\n"
+        if (!entry[:negation_ind])
+          entry.translation_codes(options['preferred_code_sets'], options['value_set_map']).each do |translation|
+            code_string += "<translation code=\"#{translation['code']}\" codeSystem=\"#{HealthDataStandards::Util::CodeSystemHelper.oid_for_code_system(translation['code_set'])}\"/>\n"
+          end
         end
         code_string
       end
@@ -86,6 +90,14 @@ module HealthDataStandards
       def value_or_null_flavor(time)
         if time 
           return "value='#{Time.at(time).utc.to_formatted_s(:number)}'"
+        else 
+         return "nullFlavor='UNK'"
+       end
+      end
+
+      def date_value_or_null_flavor(time)
+        if time 
+          return "value='#{Time.at(time).utc.strftime("%Y%m%d")}'"
         else 
          return "nullFlavor='UNK'"
        end
@@ -157,7 +169,7 @@ module HealthDataStandards
             clean_hash[codes['codeSystem']] = clean_hash_code_system(codes)
           elsif codes['_id']
             codes.keys.reject {|key| ['_id'].include? key}.each do |hashkey|
-              clean_hash[hashkey.titleize] = clean_hash_id(codes, hashkey)
+              clean_hash[hashkey.titleize] = clean_hash_id(codes)
             end
           elsif codes['scalar']
             return "#{codes['scalar']} #{codes['units']}"

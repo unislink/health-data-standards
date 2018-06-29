@@ -19,7 +19,8 @@ module HealthDataStandards
                                   :locals => {:measures => measures, :start_date => start_date, 
                                               :end_date => end_date,
                                               :results => results, :qrda3_version => qrda3_version,
-                                              :header=>header})
+                                              :header=>header
+                                            })
       end
     end
   end
