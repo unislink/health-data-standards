@@ -20,24 +20,24 @@ module HealthDataStandards
       def create_code_string(entry, preferred_code, options={})
 
         code_string = create_code_display_string(entry, preferred_code, options)
+      
+        unless entry['negationInd'] == true
+          code_string += "<originalText>#{ERB::Util.html_escape entry.description}</originalText>" if entry.respond_to?(:description)
 
-        code_string += "<originalText>#{ERB::Util.html_escape entry.description}</originalText>" if entry.respond_to?(:description)
-        
-        code_string += create_laterality_code_string(entry, options) if options["laterality"]
-        
-        code_string += create_translations_code_string(entry, options) if options["attribute"] == :codes && entry.respond_to?(:translation_codes)
-        
-        code_string += "</#{options['tag_name']}>"
-
+          code_string += create_laterality_code_string(entry, options) if options["laterality"]
+          
+          code_string += create_translations_code_string(entry, options) if options["attribute"] == :codes && entry.respond_to?(:translation_codes)
+          
+          code_string += "</#{options['tag_name']}>"
+        end
         code_string
       end
 
       def create_code_display_string(entry, preferred_code, options={})
         code_string = nil
-        if entry.respond_to?(:negation_ind) && entry[:negation_ind]
-          code_string = "<#{options['tag_name']} "
-          code_string += "nullFlavor=\"NA\" " unless options["exclude_null_flavor"]
-          code_string += "#{options['extra_content']}>"
+        if entry['negationInd'] == true
+          code_string = "<#{options['tag_name']} nullFlavor=\"NA\" #{options['extra_content']}/>"
+
         elsif preferred_code
           code_system_oid = HealthDataStandards::Util::CodeSystemHelper.oid_for_code_system(preferred_code['code_set'])
           code_string = "<#{options['tag_name']} code=\"#{preferred_code['code']}\" codeSystem=\"#{code_system_oid}\" #{options['extra_content']} "

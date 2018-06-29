@@ -18,6 +18,7 @@
   <code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
     displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
   <!-- SHALL Title, SHOULD have this content -->
+
   <title><%= header[:partner_name] %> QRDA Calculated Summary Report</title>
   <!-- SHALL  -->
   <effectiveTime value="<%= Time.now.utc.to_formatted_s(:number) %>"/>
@@ -31,6 +32,7 @@
       <id nullFlavor="NA"/>
     </patientRole>
   </recordTarget>
+
 
   <% if header[:practice]  %>
     <author>
@@ -75,12 +77,14 @@
     <%== render :partial=>"author", :collection=>header.authors %>
   <% end %>
   
+
   <!-- SHALL have 1..* author. MAY be device or person.
     The author of the CDA document in this example is a device at a data submission vendor/registry. -->
 
   <!-- The custodian of the CDA document is the same as the legal authenticator in this
   example and represents the reporting organization. -->
   <!-- SHALL -->
+
   <% if header[:practice] %>
     <custodian>
       <assignedCustodian>

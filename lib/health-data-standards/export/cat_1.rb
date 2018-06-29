@@ -1,7 +1,6 @@
 module HealthDataStandards
   module Export
     class Cat1
-      include HealthDataStandards::Export::Helper::ScoopedViewHelper
       
       def initialize(qrda_version = nil)
         template_helper = HealthDataStandards::Export::TemplateHelper.new('cat1', 'cat1', nil, qrda_version)
@@ -12,15 +11,13 @@ module HealthDataStandards
 
       @@vs_map = nil
 
-      @@most_recent_qrda_version = 'r3_1'
-      @@valid_qrda_versions = ['r3_1', 'r3', 'r2']
+      @@most_recent_qrda_version = 'r4'
+      @@valid_qrda_versions = ['r4', 'r3_1', 'r3', 'r2']
 
       #default qrda_version should default to latest version
-      def export(patient, measures, start_date, end_date, header=nil, qrda_version='r3_1', cms_compatibility=false)
-        #this will ensure that any value_sets that have been added to a bundle since the last qrda export will be picked up.
-        clear_vs_map(patient.bundle_id)
-        
+      def export(patient, measures, start_date, end_date, header=nil, qrda_version='r4', cms_compatibility=false)
         qrda_version = qrda_version.nil? ? @@most_recent_qrda_version : qrda_version
+
         if (!@@valid_qrda_versions.include? qrda_version)
           raise "Unknown QRDA version provided"
         end
