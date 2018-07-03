@@ -132,7 +132,7 @@ class Record
   end
 
   def dedup_section!(section)
-    [:encounters, :procedures, :results].include?(section) ? dedup_section_merging_codes_and_values!(section) : dedup_section_ignoring_content!(section)
+    [:encounters, :procedures, :results, :medications].include?(section) ? dedup_section_merging_codes_and_values!(section) : dedup_section_ignoring_content!(section)
   end
   def dedup_record!
     Record::Sections.each {|section| self.dedup_section!(section)}
