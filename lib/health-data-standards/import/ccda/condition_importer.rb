@@ -5,7 +5,7 @@ module HealthDataStandards
         
         def initialize
           super
-          @entry_finder = CDA::EntryFinder.new("//cda:section[cda:templateId/@root='2.16.840.1.113883.10.20.22.2.5' or cda:templateId/@root='2.16.840.1.113883.10.20.22.2.5.1']/cda:entry/cda:act/cda:entryRelationship/cda:observation[@duplicate='false']")
+          @entry_finder = CDA::EntryFinder.new("//cda:section[cda:templateId/@root='2.16.840.1.113883.10.20.22.2.5' or cda:templateId/@root='2.16.840.1.113883.10.20.22.2.5.1']/cda:entry/cda:act/cda:entryRelationship/cda:observation[@valid='true']")
           @status_xpath = "../../../cda:act/cda:statusCode | ./cda:statusCode | ./cda:entryRelationship/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.6']/cda:value"
           @laterality_xpath = "./cda:targetSiteCode"
           #optional
@@ -51,8 +51,9 @@ module HealthDataStandards
           qhMap = {}
           entries.each do |entry|
             keys = []
-            statusCode = entry.xpath("cda:statusCode")[0]
-            keys << statusCode.attributes["code"].value if statusCode && statusCode.attributes["code"]
+            statusCode = entry.xpath("../../../cda:act/cda:statusCode | cda:statusCode")[0]
+            statusCodeValue = statusCode.attributes["code"].value if statusCode && statusCode.attributes["code"]
+            keys << statusCodeValue if statusCodeValue
           
             effectiveTime = entry.xpath("cda:effectiveTime")[0]
             keys << effectiveTime.attributes["value"].value if effectiveTime && effectiveTime.attributes["value"]
@@ -74,7 +75,8 @@ module HealthDataStandards
             
             plainText = keys.flatten.reject { |c| c.blank? }.join(", ")
             qhash = Digest::MD5.hexdigest(plainText)
-            entry["duplicate"] = qhMap[qhash] || false
+            duplicate = qhMap[qhash] || false
+            entry["valid"] = !duplicate && statusCodeValue != 'aborted'
             qhMap[qhash] = true     
           end
           Rails.logger.info "#{Time.now.to_s} CCDA conditionimporter total #{entries.count} unique #{qhMap.keys.count}"
