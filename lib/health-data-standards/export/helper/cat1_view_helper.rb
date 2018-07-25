@@ -18,6 +18,7 @@ module HealthDataStandards
                                                                                                                                    :r2_compatibility => r2_compatibility})
               rescue => e
                 Rails.logger.info "*****CAT1*** DC: #{dc['data_criteria_oid']}  VS: #{dc['value_set_oid']} #{e.message}"
+                ""
               end
           end
           html_array.join("\n")
@@ -34,6 +35,7 @@ module HealthDataStandards
               render_data_criteria(udc, entries, r2_compatibility, qrda_version)
             rescue => e
               raise HealthDataStandards::Export::PatientExportDataCriteriaException.new(e.message, patient, udc['data_criteria'], entries)
+              ""
             end
           end
           data_criteria_html.compact.join("\n")
